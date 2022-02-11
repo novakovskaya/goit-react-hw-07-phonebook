@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import actions from "../../redux/contacts/contacts-actions";
+import {filterContact} from "../../redux/contacts/contacts-actions";
 import styles from "./Filter.module.scss";
 
 const Filter = () => {
@@ -8,7 +8,7 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const onFindContact = (event) =>
-    dispatch(actions.filterContact(event.target.value));
+    dispatch(filterContact(event.target.value));
 
   return (
     <label className={styles.Label}>

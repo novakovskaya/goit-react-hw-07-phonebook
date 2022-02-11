@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { nanoid } from "nanoid";
-import actions from "../../redux/contacts/contacts-actions";
+import {addContact} from "../../redux/contacts/contacts-actions";
 import styles from "./ContactForm.module.scss";
 
 const ContactForm = () => {
@@ -29,7 +29,7 @@ const ContactForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(actions.addContact({ name, number }));
+    dispatch(addContact({ name, number }));
     resetInput();
   };
 
