@@ -1,24 +1,17 @@
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import {deleteContact} from "../../redux/contacts/contacts-actions";
-import styles from "./ContactList.module.scss";
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsSelectors, contactsOperations } from 'redux/contacts';
+import styles from './ContactList.module.scss';
 
-const ContactList = () => {
-  const contacts = useSelector((state) => state.contacts.items);
-  const filter = useSelector((state) => state.contacts.filter);
+export const ContactList = () => {
+  const onFilteredContacts = useSelector(contactsSelectors.getFilteredContacts);
   const dispatch = useDispatch();
 
-  const normalizedFilter = (contacts, filter) => {
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const filteredContacts = normalizedFilter(contacts, filter);
+  const onDeleteContact = id => dispatch(contactsOperations.deleteContact(id));
 
   return (
     <ul className={styles.List}>
-      {filteredContacts.map(({ id, name, number }) => (
+      {onFilteredContacts.map(({ id, name, number }) => (
         <li key={id} className={styles.Item}>
           <p className={styles.Contact}>{name}:</p>
           <p className={styles.Number}>{number}</p>
@@ -26,7 +19,7 @@ const ContactList = () => {
           <button
             type="button"
             className={styles.Button}
-            onClick={() => dispatch(deleteContact(id))}
+            onClick={() => onDeleteContact(id)}
           >
             Delete
           </button>
@@ -45,5 +38,3 @@ ContactList.propTypes = {
     })
   ),
 };
-
-export default ContactList;

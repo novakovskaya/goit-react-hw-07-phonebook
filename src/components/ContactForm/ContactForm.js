@@ -1,23 +1,33 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { nanoid } from "nanoid";
-import {addContact} from "../../redux/contacts/contacts-actions";
-import styles from "./ContactForm.module.scss";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsSelectors, contactsOperations } from 'redux/contacts';
+import { nanoid } from 'nanoid';
+import { toast } from 'react-toastify';
+import styles from './ContactForm.module.scss';
 
-const ContactForm = () => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+export const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const contacts = useSelector(contactsSelectors.getContacts);
   const dispatch = useDispatch();
 
-  const handleInput = (event) => {
+  const addContact = contact => {
+    const contactFind = contacts.find(({ name }) => name === contact.name);
+
+    contactFind
+      ? toast(`❗️ ${name} is already in contacts.`)
+      : dispatch(contactsOperations.addContact(contact));
+  };
+
+  const handleInput = event => {
     const { name, value } = event.target;
 
     switch (name) {
-      case "name":
+      case 'name':
         setName(value);
         break;
 
-      case "number":
+      case 'number':
         setNumber(value);
         break;
 
@@ -26,16 +36,16 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    dispatch(addContact({ name, number }));
+    addContact({ name, number });
     resetInput();
   };
 
   const resetInput = () => {
-    setName("");
-    setNumber("");
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -75,5 +85,3 @@ const ContactForm = () => {
     </form>
   );
 };
-
-export default ContactForm;
