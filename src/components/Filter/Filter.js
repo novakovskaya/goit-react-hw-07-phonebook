@@ -1,14 +1,14 @@
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import {filterContact} from "../../redux/contacts/contacts-actions";
-import styles from "./Filter.module.scss";
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsSelectors, contactsActions } from 'redux/contacts';
+import styles from './Filter.module.scss';
 
-const Filter = () => {
-  const value = useSelector((state) => state.contacts.filter);
+export const Filter = () => {
+  const value = useSelector(contactsSelectors.getFilter);
   const dispatch = useDispatch();
 
-  const onFindContact = (event) =>
-    dispatch(filterContact(event.target.value));
+  const onFindContact = event =>
+    dispatch(contactsActions.filterContacts(event.target.value));
 
   return (
     <label className={styles.Label}>
@@ -26,5 +26,3 @@ const Filter = () => {
 Filter.propTypes = {
   value: PropTypes.string,
 };
-
-export default Filter;
